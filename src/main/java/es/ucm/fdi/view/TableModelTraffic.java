@@ -37,6 +37,9 @@ public class TableModelTraffic extends JPanel {
 		tablemodel.updated();
 	}
 
+	public boolean empty() {
+		return (elements.size() == 0);
+	}
 	/**
 	 * Internal class, describes the model for the interface tables
 	 * @author Carla Martínez y Beatriz Herguedas
@@ -71,5 +74,6 @@ public class TableModelTraffic extends JPanel {
 		public void updated() {
 			fireTableDataChanged();
 		}
+		
 	}
 }

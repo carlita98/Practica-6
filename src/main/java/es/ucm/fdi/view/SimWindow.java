@@ -87,9 +87,11 @@ public class SimWindow extends JFrame implements Listener {
 
 	//Spinner and TextField
 	private JSpinner steps =  new JSpinner();
+	private JSpinner delay = new JSpinner();
 	private JTextField time  = new JTextField();
 	private JLabel stepsLabel =  new JLabel(" Steps: ");
 	private JLabel timeLabel = new JLabel(" Time: ");
+	private JLabel delayLabel = new JLabel (" Delay: ");
 
 	//Buttons, Menu and ToolBar
 	private SimulatorAction load;
@@ -98,6 +100,7 @@ public class SimWindow extends JFrame implements Listener {
 	private SimulatorAction event;
 	private SimulatorAction run;
 	private SimulatorAction reset;
+	private SimulatorAction stop;
 	private SimulatorAction generateReport;
 	private SimulatorAction deleteReport;
 	private SimulatorAction saveReport;
@@ -121,6 +124,7 @@ public class SimWindow extends JFrame implements Listener {
 	private TableModelTraffic roadsTable;
 	private TableModelTraffic junctionsTable;
 	
+	private RunThread thread;
 	/**
 	 * Class constructor
 	 * @param ctrl an instantiation of the current controller used in TrafficSimulator
@@ -228,7 +232,11 @@ public class SimWindow extends JFrame implements Listener {
 				"play.png", "Execute the simulation", KeyEvent.VK_E, "control E", 
 				() -> {
 					downLabel.setText(Command.Run.toString());
-					ctrl.getSim().execute((Integer) steps.getValue(), out);
+					if(!eventsView.empty()) {
+						disableButton();
+						thread = new RunThread((Integer) steps.getValue(), ctrl,(Integer) delay.getValue());
+						thread.start();
+					}
 				});
 
 		reset = new SimulatorAction(Command.Reset.getName(), 
@@ -238,12 +246,29 @@ public class SimWindow extends JFrame implements Listener {
 					ctrl.getSim().reset();
 				});
 
+		stop = new SimulatorAction(Command.Reset.getName(), 
+				"stop.png", "Reset", KeyEvent.VK_S, "control S", 
+				() -> {
+					enableButton();
+					try {
+						thread.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					downLabel.setText(Command.GenerateReport.toString());
+				});
+		
 		//Create the Spinner
 		SpinnerModel model = new SpinnerNumberModel(1,0,1000000000,1);
 		steps.setModel(model);
-		steps.setPreferredSize(new Dimension(100, 10));
+		steps.setPreferredSize(new Dimension(60, 10));
 
-		time.setPreferredSize(new Dimension(100, 10));
+		SpinnerModel delayModel = new SpinnerNumberModel (0, 0,1000000000, 1);
+		delay.setModel(delayModel);
+		delay.setPreferredSize(new Dimension(60, 10));
+		
+		time.setPreferredSize(new Dimension(60, 10));
 		time.setText("0");
 		time.setEditable(false);
 
@@ -284,6 +309,9 @@ public class SimWindow extends JFrame implements Listener {
 		toolBar.add(event);
 		toolBar.add(run);
 		toolBar.add(reset);
+		toolBar.add(stop);
+		toolBar.add(delayLabel);
+		toolBar.add(delay);
 		toolBar.add(stepsLabel);
 		toolBar.add(steps);
 		toolBar.add(timeLabel);
@@ -298,11 +326,12 @@ public class SimWindow extends JFrame implements Listener {
 		toolBar.add(saveReport);
 		toolBar.add(exit);
 		JPanel aux = new JPanel();
-		aux.setPreferredSize(new Dimension(700, 1));
+		aux.setPreferredSize(new Dimension(100, 1));
 		toolBar.add(aux);
 		add(toolBar, BorderLayout.NORTH);
 
 	}
+
 
 	/**
 	 * Adds actions to MenuBar, and Bar to Window
@@ -523,5 +552,34 @@ public class SimWindow extends JFrame implements Listener {
 		Ini read = new Ini();
 		read.load(new FileInputStream(file));
 		return read.toString();
+	}
+	
+
+	private void disableButton() {
+		load.setEnabled(false);
+		save.setEnabled(false);
+		clear.setEnabled(false);
+		event.setEnabled(false);
+		run.setEnabled(false);
+		reset.setEnabled(false);
+		generateReport.setEnabled(false);
+		deleteReport.setEnabled(false);
+		saveReport.setEnabled(false);
+		exit.setEnabled(false);	
+	}
+
+
+	private void enableButton() {
+		load.setEnabled(true);
+		save.setEnabled(true);
+		clear.setEnabled(true);
+		event.setEnabled(true);
+		run.setEnabled(true);
+		reset.setEnabled(true);
+		generateReport.setEnabled(true);
+		deleteReport.setEnabled(true);
+		saveReport.setEnabled(true);
+		exit.setEnabled(true);	
+		
 	}
 }

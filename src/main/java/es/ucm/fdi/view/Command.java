@@ -13,6 +13,7 @@ public enum Command {
 	Event("Insertar", "Inserting events..."),
 	Run("Ejecutar", "Executing the simulation..."),
 	Reset("Reiniciar", "Reset the simulation..."),
+	Stop("Parar", "Stop the simulation..."),
 	GenerateReport("Generar informes", "Generating report..."),
 	DeleteReport("Eliminar informes", "Deleting report..."),
 	SaveReport("Guardar informes", "Saving report..."),
