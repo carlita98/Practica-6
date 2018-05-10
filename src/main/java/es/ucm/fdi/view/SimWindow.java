@@ -232,11 +232,11 @@ public class SimWindow extends JFrame implements Listener {
 				"play.png", "Execute the simulation", KeyEvent.VK_E, "control E", 
 				() -> {
 					downLabel.setText(Command.Run.toString());
-					if(!eventsView.empty()) {
+				/*	if(!eventsView.empty()) {
 						disableButton();
 						thread = new RunThread((Integer) steps.getValue(), ctrl,(Integer) delay.getValue());
 						thread.start();
-					}
+					}*/
 				});
 
 		reset = new SimulatorAction(Command.Reset.getName(), 
@@ -250,12 +250,12 @@ public class SimWindow extends JFrame implements Listener {
 				"stop.png", "Reset", KeyEvent.VK_S, "control S", 
 				() -> {
 					enableButton();
-					try {
+				/*	try {
 						thread.wait();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}*/
 					downLabel.setText(Command.GenerateReport.toString());
 				});
 		
