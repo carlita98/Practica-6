@@ -1,9 +1,16 @@
 package es.ucm.fdi.view;
 
-public class Stepper {
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import es.ucm.fdi.model.Simulator.EventType;
+
+public class Stepper{
 	private Runnable before;
 	private Runnable during;
 	private Runnable after;
+	
+	private final static Logger log = Logger.getLogger(Stepper.class.getName());
 	
 	private volatile boolean stopRequested = false;
 	private int steps;
@@ -29,8 +36,8 @@ public class Stepper {
 					Stepper.this.steps --;
 				}
 			}catch(Exception e) {
-				//log.warn("Exception while stepping, "
-					//	+ this.steps + " remaining: "+ e, e);
+				log.log(Level.WARNING, "Exception while stepping, "
+					+ this.steps + " remaining: "+ e, e);
 			}finally {
 				after.run();
 			}
@@ -43,3 +50,4 @@ public class Stepper {
 		stopRequested = true;
 	}
 }
+	
