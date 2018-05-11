@@ -124,7 +124,10 @@ public class SimWindow extends JFrame implements Listener {
 	private TableModelTraffic roadsTable;
 	private TableModelTraffic junctionsTable;
 	
-	private RunThread thread;
+	//private Stepper thread;
+	private Stepper stepper = new Stepper(()->{disableButton();}, ()->{ctrl.getSim().execute(1, out);},
+	()->{enableButton();});
+	
 	/**
 	 * Class constructor
 	 * @param ctrl an instantiation of the current controller used in TrafficSimulator
@@ -233,9 +236,7 @@ public class SimWindow extends JFrame implements Listener {
 				() -> {
 					downLabel.setText(Command.Run.toString());
 					if(!eventsView.empty()) {
-						disableButton();
-						thread = new RunThread((Integer) steps.getValue(), ctrl,(Integer) delay.getValue());
-						thread.start();
+						stepper.start((Integer) steps.getValue(), (Integer) delay.getValue());
 					}
 				});
 
@@ -250,12 +251,7 @@ public class SimWindow extends JFrame implements Listener {
 				"stop.png", "Reset", KeyEvent.VK_S, "control S", 
 				() -> {
 					enableButton();
-					try {
-						thread.wait();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					stepper.stop();
 					downLabel.setText(Command.GenerateReport.toString());
 				});
 		
