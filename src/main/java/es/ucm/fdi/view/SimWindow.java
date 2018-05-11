@@ -551,6 +551,9 @@ public class SimWindow extends JFrame implements Listener {
 	}
 	
 
+	/**
+	 * Disable all the buttons except from the stop one
+	 */
 	private void disableButton() {
 		load.setEnabled(false);
 		save.setEnabled(false);
@@ -564,7 +567,9 @@ public class SimWindow extends JFrame implements Listener {
 		exit.setEnabled(false);	
 	}
 
-
+	/**
+	 * Enable all the buttons 
+	 */
 	private void enableButton() {
 		load.setEnabled(true);
 		save.setEnabled(true);
