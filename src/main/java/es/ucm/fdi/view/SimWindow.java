@@ -2,8 +2,8 @@ package es.ucm.fdi.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -362,6 +363,7 @@ public class SimWindow extends JFrame implements Listener {
 
 		if (currentFile != null) {
 			eventsEditor.get_editor().setText(readFile(currentFile));
+			initializeBorder(eventsEditor, "Events: " + currentFile.getName());
 			eventsEditor.get_editor().setBorder(BorderFactory.createTitledBorder
 					(BorderFactory.createLineBorder(Color.black, 2),
 					"Events: " + currentFile.getName()));
@@ -377,9 +379,7 @@ public class SimWindow extends JFrame implements Listener {
 	private void addReportsArea() {
 		reportsArea = new JTextArea(40, 30);
 		reportsArea.setEditable(false);
-		reportsArea.setBorder(
-				BorderFactory.createTitledBorder
-				(BorderFactory.createLineBorder(Color.black, 2), "Reports"));
+		initializeBorder(reportsArea, "Reports");
 	}
 
 	/**
@@ -387,9 +387,7 @@ public class SimWindow extends JFrame implements Listener {
 	 */
 	private void addEventsView() {
 		eventsView = new TableModelTraffic(eventsViewColumns, events);
-		eventsView.setBorder(
-				BorderFactory.createTitledBorder
-				(BorderFactory.createLineBorder(Color.black, 2), "Events Queue"));
+		initializeBorder(eventsView, "Events Queue");
 	}
 
 	/**
@@ -398,9 +396,7 @@ public class SimWindow extends JFrame implements Listener {
 	private void addVehicleTable() {
 		vehiclesTable = new TableModelTraffic(vehicleTableColumns, 
 				ctrl.getSim().getRoadMap().getVehiclesRO());
-		vehiclesTable.setBorder(
-				BorderFactory.createTitledBorder
-				(BorderFactory.createLineBorder(Color.black, 2), "Vehicles"));
+		initializeBorder(vehiclesTable, "Vehicles");
 	}
 
 	/**
@@ -409,9 +405,7 @@ public class SimWindow extends JFrame implements Listener {
 	private void addRoadsTable() {
 		roadsTable = new TableModelTraffic(roadTableColumns, 
 				ctrl.getSim().getRoadMap().getRoadsRO());
-		roadsTable.setBorder(
-				BorderFactory.createTitledBorder
-				(BorderFactory.createLineBorder(Color.black, 2), "Roads"));
+		initializeBorder(roadsTable, "Roads");
 	}
 
 	/**
@@ -420,9 +414,7 @@ public class SimWindow extends JFrame implements Listener {
 	private void addJunctionsTable() {
 		junctionsTable = new TableModelTraffic(junctionTableColumns, 
 				ctrl.getSim().getRoadMap().getJunctionsRO());
-		junctionsTable.setBorder(
-				BorderFactory.createTitledBorder
-				(BorderFactory.createLineBorder(Color.black, 2), "Junctions"));
+		initializeBorder(junctionsTable, "Junctions");
 	}
 
 	public void registered(UpdateEvent ue) {
@@ -499,10 +491,7 @@ public class SimWindow extends JFrame implements Listener {
 			try {
 				ctrl.setInputFile(new FileInputStream(currentFile));
 				eventsEditor.get_editor().setText(readFile(currentFile));
-				eventsEditor.get_editor().setBorder(
-						BorderFactory.createTitledBorder
-						(BorderFactory.createLineBorder(Color.black, 2),
-						"Events: " + currentFile.getName()));
+				initializeBorder(eventsEditor,"Events: " + currentFile.getName());
 			} catch (Exception e) {
 				ctrl.getSim().fireUpdateEvent
 					(EventType.ERROR, "There was a problem with file" + currentFile.getName());
@@ -523,7 +512,7 @@ public class SimWindow extends JFrame implements Listener {
 		FileNameExtensionFilter fil = new FileNameExtensionFilter("Files .ini", "ini");
 		choose.setFileFilter(fil);
 
-		int returnVal = fc.showOpenDialog(null);
+		int returnVal = fc.showSaveDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File outFile = fc.getSelectedFile();
 			try {
@@ -582,5 +571,11 @@ public class SimWindow extends JFrame implements Listener {
 		saveReport.setEnabled(true);
 		exit.setEnabled(true);	
 		
+	}
+	
+	private void initializeBorder (JComponent comp, String text){
+		comp.setBorder(
+				BorderFactory.createTitledBorder
+				(BorderFactory.createLineBorder(Color.black, 2), text));
 	}
 }

@@ -66,11 +66,14 @@ class DialogWindow extends JDialog {
 		contentPanel.add(junctionPanel);
 
 		vehiclePanel.setBorder(
-				BorderFactory.createTitledBorder(_defaultBorder, "Vehicles", TitledBorder.LEFT, TitledBorder.TOP));
+				BorderFactory.createTitledBorder(
+						_defaultBorder, "Vehicles", TitledBorder.LEFT, TitledBorder.TOP));
 		roadPanel.setBorder(
-				BorderFactory.createTitledBorder(_defaultBorder, "Roads", TitledBorder.LEFT, TitledBorder.TOP));
+				BorderFactory.createTitledBorder(
+						_defaultBorder, "Roads", TitledBorder.LEFT, TitledBorder.TOP));
 		junctionPanel.setBorder(
-				BorderFactory.createTitledBorder(_defaultBorder, "Junctions", TitledBorder.LEFT, TitledBorder.TOP));
+				BorderFactory.createTitledBorder(
+						_defaultBorder, "Junctions", TitledBorder.LEFT, TitledBorder.TOP));
 
 		vehiclePanel.setMinimumSize(new Dimension(100, 100));
 		roadPanel.setMinimumSize(new Dimension(100, 100));
