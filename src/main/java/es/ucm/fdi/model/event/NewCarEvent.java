@@ -66,7 +66,7 @@ public class NewCarEvent extends NewVehicleEvent {
 					resistance, faultyProbability, maxFaultDuration, seed);
 			m.addVehicle(v);
 
-		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
 			throw new SimulatorException(
 					"There has been a problem while adding Car ", e);
 		}

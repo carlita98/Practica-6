@@ -42,7 +42,7 @@ public class MakeFaultyVehicleEvent extends Event implements Describable {
 				//Set faulty time to the selected vehicle
 				m.getVehicle(id.get(i)).setFaultyTime(duration);
 				m.getVehicle(id.get(i)).setActualSpeed(0);
-			} catch (NoSuchElementException e) {
+			} catch (Exception e) {
 				throw new SimulatorException(
 						"There has been a problem while making vehicle faulty ", e);
 			}

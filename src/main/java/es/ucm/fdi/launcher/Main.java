@@ -188,11 +188,11 @@ public class Main {
 		
 		Controller control = new Controller (_timeLimit,inFile);		
 		SwingUtilities.invokeAndWait(new Runnable() 
-		{ public void run() {try {
-			new SimWindow( control, _inFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}}});
+    		{ public void run() {try {
+    			new SimWindow( control, _inFile);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}}});
 
 	}
 

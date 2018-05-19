@@ -1,5 +1,7 @@
 package es.ucm.fdi.model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 import es.ucm.fdi.model.object.Junction;
@@ -121,10 +123,10 @@ public class RoadMap {
 	 * 
 	 * @param j
 	 */
-	public void addJunction(Junction j) {
+	public void addJunction(Junction j) throws IllegalArgumentException{
 
 		if (simObjects.containsKey(j.getId())) {
-			throw new NoSuchElementException("This ID already exists in a Junction");
+			throw new IllegalArgumentException("This ID already exists");
 		} else {
 			junctions.add(j);
 			simObjects.put(j.getId(), j);
@@ -136,10 +138,10 @@ public class RoadMap {
 	 * 
 	 * @param r
 	 */
-	public void addRoad(Road r) {
+	public void addRoad(Road r) throws IllegalArgumentException{
 
 		if (simObjects.containsKey(r.getId())) {
-			throw new NoSuchElementException("This ID already exist in a Road");
+			throw new IllegalArgumentException("This ID already exist");
 		} else {
 			roads.add(r);
 			simObjects.put(r.getId(), r);
@@ -151,10 +153,10 @@ public class RoadMap {
 	 * 
 	 * @param v
 	 */
-	public void addVehicle(Vehicle v) {
+	public void addVehicle(Vehicle v) throws IllegalArgumentException{
 
 		if (simObjects.containsKey(v.getId())) {
-			throw new NoSuchElementException("This ID already exist in a Vehicle");
+			throw new IllegalArgumentException("This ID already exist");
 		} else {
 			vehicles.add(v);
 			simObjects.put(v.getId(), v);

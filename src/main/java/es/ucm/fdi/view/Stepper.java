@@ -35,7 +35,8 @@ public class Stepper{
 					during.run();
 					try {
 						Thread.sleep(delay);
-					}catch(InterruptedException ie) {}
+					}catch(InterruptedException ie) {					    
+					}
 					Stepper.this.steps --;
 				}
 			}catch(Exception e) {

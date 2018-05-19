@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import es.ucm.fdi.model.RoadMap;
+import es.ucm.fdi.model.SimulatorException;
 import es.ucm.fdi.model.object.Bike;
 import es.ucm.fdi.model.object.Junction;
 import es.ucm.fdi.model.object.Vehicle;
@@ -35,8 +36,9 @@ public class NewBikeEvent extends NewVehicleEvent {
 
 	/**
 	 * Introduce a new Bike in the RoadMap
+	 * @throws SimulatorException 
 	 */
-	public void execute(RoadMap m) {
+	public void execute(RoadMap m) throws SimulatorException {
 		ArrayList<Junction> jList = new ArrayList<>();
 		try {
 			for (int i = 0; i < itinerary.size(); i++) {
@@ -46,8 +48,8 @@ public class NewBikeEvent extends NewVehicleEvent {
 			Vehicle v = new Bike(id, maxSpeed, jList, type);
 			m.addVehicle(v);
 
-		} catch (NoSuchElementException e) {
-			throw new IllegalArgumentException(
+		} catch (Exception e) {
+			throw new SimulatorException(
 					"There has been a problem while adding bike ", e);
 		}
 	}

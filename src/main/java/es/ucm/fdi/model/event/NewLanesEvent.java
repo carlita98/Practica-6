@@ -52,7 +52,7 @@ public class NewLanesEvent extends NewRoadEvent {
 			m.getJunction(idJunctionIni).addOutcoming(r);
 			m.getJunction(idJunctionDest).addIncoming(r);
 			m.getJunction(idJunctionDest).addInRoadQueue(r);
-		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
 			throw new SimulatorException(
 					"There has been a problem while adding HighWay", e);
 		}

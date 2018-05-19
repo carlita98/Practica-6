@@ -6,8 +6,10 @@ import es.ucm.fdi.ini.Ini;
 import es.ucm.fdi.ini.IniSection;
 import es.ucm.fdi.model.Simulator;
 import es.ucm.fdi.model.Simulator.EventType;
+import es.ucm.fdi.model.SimulatorException;
 import es.ucm.fdi.model.event.Event;
 import es.ucm.fdi.model.event.builder.EventBuilder;
+import es.ucm.fdi.view.SimulatorAction;
 
 /**
  * Recieve the outputFile and inputFile, load the IniSection and call the
@@ -65,8 +67,9 @@ public class Controller {
 	 * 
 	 * @param sec
 	 * @return Event
+	 * @throws SimulatorException 
 	 */
-	public Event parseSection(IniSection sec) {
+	public Event parseSection(IniSection sec) throws SimulatorException {
 		Event e = null;
 		// Iterates through the EventBuilder array
 		for (EventBuilder eb : EventBuilder.bs) {
@@ -75,11 +78,12 @@ public class Controller {
 				if (e != null) {
 					break;
 				}
-			} catch (IllegalArgumentException i) {
+			} catch (Exception i) {
 				StringBuilder sb = new StringBuilder();
-				sb.append("There has been a problem parsing a Section");
+				sb.append("There has been a problem parsing a Section ");
 				sb.append(sec);
-				throw new IllegalArgumentException(sb.toString(), i);
+				sb.append("\n");
+				throw new SimulatorException(sb.toString(), i);
 			}
 		}
 
@@ -98,20 +102,18 @@ public class Controller {
 		try {
 			read = new Ini(inputFile);
 			for (IniSection sec : read.getSections()) {
-				try {
 					Event newEvent = parseSection(sec);
 					if (newEvent != null) {
 						sim.insertEvent(newEvent);
 					}
-				} catch (IllegalArgumentException i) {
-					StringBuilder sb = new StringBuilder();
-					sb.append("Error in the simulation\n");
-					sb.append(i.getMessage());
-					getSim().fireUpdateEvent(EventType.ERROR, sb.toString());
-				}
 			}
-		} catch (IOException e) {
-			getSim().fireUpdateEvent(EventType.ERROR,"Error in the simulation\n");
+		} catch (Exception e) {
+		    if (e.getCause()!= null) {
+		        getSim().getError(e.getMessage() + " .\nCaused by: "+ e.getCause());
+		    }
+		    else {
+		        getSim().getError(e.getMessage());
+		    }
 		}
 		
 	}

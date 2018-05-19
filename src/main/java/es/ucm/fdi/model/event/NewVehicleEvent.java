@@ -41,12 +41,12 @@ public class NewVehicleEvent extends Event implements Describable {
 	 */
 	public void execute(RoadMap m) throws SimulatorException {
 		ArrayList<Junction> jList = new ArrayList<>();
-		for (int i = 0; i < itinerary.size(); i++) {
-			jList.add(m.getJunction(itinerary.get(i)));
-		}
-		try {
-			m.addVehicle(new Vehicle(id, maxSpeed, jList));
-		} catch (NoSuchElementException e) {
+	      try {
+    		for (int i = 0; i < itinerary.size(); i++) {
+    			jList.add(m.getJunction(itinerary.get(i)));
+    		}
+    		m.addVehicle(new Vehicle(id, maxSpeed, jList));
+		} catch (Exception e) {
 			throw new SimulatorException(
 					"There has been a problem while adding Vehicle ", e);
 		}

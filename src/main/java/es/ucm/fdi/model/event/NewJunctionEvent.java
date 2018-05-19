@@ -36,7 +36,7 @@ public class NewJunctionEvent extends Event implements Describable {
 	public void execute(RoadMap m) throws SimulatorException {
 		try {
 			m.addJunction(new Junction(id));
-		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
 			throw new SimulatorException(
 					"There has been a problem while adding Junction ", e);
 		}

@@ -48,7 +48,7 @@ public class NewDirtEvent extends NewRoadEvent {
 			m.getJunction(idJunctionDest).addIncoming(r);
 			m.getJunction(idJunctionDest).addInRoadQueue(r);
 
-		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
 			throw new SimulatorException(
 					"There has been a problem while adding Path", e);
 		}

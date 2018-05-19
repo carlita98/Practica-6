@@ -126,8 +126,10 @@ public class SimWindow extends JFrame implements Listener {
 	private TableModelTraffic junctionsTable;
 	
 	//private Stepper thread;
-	private Stepper stepper = new Stepper(()->{disableButton();}, ()->{ctrl.getSim().execute(1, out);},
-	()->{enableButton();});
+	private Stepper stepper = new Stepper(
+	        ()->{disableButton();}, 
+	        ()->{ctrl.getSim().execute(1, out);},
+	        ()->{enableButton();});
 	
 	/**
 	 * Class constructor
@@ -364,13 +366,9 @@ public class SimWindow extends JFrame implements Listener {
 		if (currentFile != null) {
 			eventsEditor.get_editor().setText(readFile(currentFile));
 			initializeBorder(eventsEditor, "Events: " + currentFile.getName());
-			eventsEditor.get_editor().setBorder(BorderFactory.createTitledBorder
-					(BorderFactory.createLineBorder(Color.black, 2),
-					"Events: " + currentFile.getName()));
-		} else
-			eventsEditor.get_editor().setBorder(
-					BorderFactory.createTitledBorder
-					(BorderFactory.createLineBorder(Color.black, 2), "Events"));
+		} else {
+		    initializeBorder(eventsEditor, "Events: ");
+		}
 	}
 
 	/**
@@ -468,7 +466,10 @@ public class SimWindow extends JFrame implements Listener {
 	 * Given an error shows the error message and then resets the simulator
 	 */
 	public void error(UpdateEvent ue, String error) {
-		showError.showMessageDialog(this, error);
+		showError.showMessageDialog(this, error, 
+		        "Simulation Error" , 
+		        JOptionPane.ERROR_MESSAGE);
+		
 		ctrl.getSim().reset();
 		
 		graph.setRm(ctrl.getSim().getRoadMap());
@@ -488,14 +489,19 @@ public class SimWindow extends JFrame implements Listener {
 		int returnVal = fc.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			currentFile = fc.getSelectedFile();
-			try {
-				ctrl.setInputFile(new FileInputStream(currentFile));
-				eventsEditor.get_editor().setText(readFile(currentFile));
-				initializeBorder(eventsEditor,"Events: " + currentFile.getName());
-			} catch (Exception e) {
-				ctrl.getSim().fireUpdateEvent
-					(EventType.ERROR, "There was a problem with file" + currentFile.getName());
-			}
+				try {
+		            ctrl.setInputFile(new FileInputStream(currentFile));
+                    eventsEditor.get_editor().setText(readFile(currentFile));
+                    initializeBorder(eventsEditor,"Events: " + currentFile.getName());
+                }catch (Exception e) {
+                    if (e.getCause() != null) {
+                        ctrl.getSim().getError(
+                                e.getMessage() + " .Caused by: " + e.getCause());
+                    }
+                    else {
+                        ctrl.getSim().getError(e.getMessage());
+                    }
+                }
 		} else {
 			downLabel.setText("Load cancelled by user.");
 		}
@@ -514,13 +520,18 @@ public class SimWindow extends JFrame implements Listener {
 
 		int returnVal = fc.showSaveDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File outFile = fc.getSelectedFile();
-			try {
-				Files.write(outFile.toPath(), area.getText().getBytes("UTF-8"));
-			} catch (Exception e) {	
-				ctrl.getSim().fireUpdateEvent
-					(EventType.ERROR, "There was a problem with file" + outFile.getName());
-			}
+				try {
+		            File outFile = fc.getSelectedFile();
+                    Files.write(outFile.toPath(), area.getText().getBytes("UTF-8"));
+                }catch (Exception e) {
+                    if (e.getCause() != null) {
+                        ctrl.getSim().getError(
+                            e.getMessage() + " .Caused by: " + e.getCause());
+                    }
+                    else {
+                        ctrl.getSim().getError(e.getMessage());
+                    }
+                }
 		} else {
 			downLabel.setText("Save cancelled by user.");
 		}
@@ -573,6 +584,11 @@ public class SimWindow extends JFrame implements Listener {
 		
 	}
 	
+	/**
+	 * Initialize the component borders with the same style
+	 * @param comp
+	 * @param text
+	 */
 	private void initializeBorder (JComponent comp, String text){
 		comp.setBorder(
 				BorderFactory.createTitledBorder

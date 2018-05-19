@@ -56,7 +56,7 @@ public class NewRoadEvent extends Event implements Describable {
 			m.getJunction(idJunctionIni).addOutcoming(r);
 			m.getJunction(idJunctionDest).addIncoming(r);
 			m.getJunction(idJunctionDest).addInRoadQueue(r);
-		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
 			throw new SimulatorException(
 					"There has been a problem while adding Road ", e);
 		}

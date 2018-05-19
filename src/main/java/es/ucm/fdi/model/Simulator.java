@@ -91,24 +91,23 @@ public class Simulator {
 				generateReport(file, roadMap.getVehicles());
 				fireUpdateEvent(EventType.ADVANCED, null);
 			}
-		} catch (SimulatorException e) {
+		} catch (Exception e) {
 			Exception c = e;
 			StringBuilder sb = new StringBuilder();
 			sb.append( c.getMessage());
 			sb.append(".It happened at time: ");
 			sb.append(timeLimit);
-			sb.append(".");
-			fireUpdateEvent(EventType.ERROR, sb.toString());
+			sb.append(". \n");
+			//fireUpdateEvent(EventType.ERROR, sb.toString());
 			while (c != null) {
 				c = (Exception) c.getCause();
 				if (c != null) {
-					StringBuilder sb2 = new StringBuilder();
-					sb2.append("Caused by: ");
+					sb.append("Caused by: ");
 					sb.append( c.getMessage());
-					sb.append(".");
-					fireUpdateEvent(EventType.ERROR, sb.toString());
+					sb.append(".\n");
 				}
 			}
+            fireUpdateEvent(EventType.ERROR, sb.toString());
 		}
 	}
 
@@ -253,7 +252,8 @@ public class Simulator {
 	public void addSimulatorListener(Listener l) {
 		listeners.add(l);
 		UpdateEvent ue = new UpdateEvent(EventType.REGISTERED);
-		SwingUtilities.invokeLater(() -> l.registered(ue));
+		l.registered(ue);
+		//SwingUtilities.invokeLater(() -> l.registered(ue));
 	}
 
 	/**
@@ -266,36 +266,48 @@ public class Simulator {
 	}
 
 	/**
+	 * Method called by external classes of simulator that 
+	 * want to show an Error message
+	 * @param message
+	 */
+	public void getError(String message) {
+	    fireUpdateEvent (EventType.ERROR, message);
+	}
+	/**
 	 * Calls the necessary methods from the listeners
 	 * 
 	 * @param type
 	 * @param error
 	 */
-	public void fireUpdateEvent(EventType type, String error) {
+	private void fireUpdateEvent(EventType type, String error) {
 
 		UpdateEvent ue = new UpdateEvent(type);
 
 		if (type == EventType.RESET) {
 
 			for (Listener e : listeners) {
-				SwingUtilities.invokeLater(() -> e.reset(ue));
+			    e.reset(ue);
+				//SwingUtilities.invokeLater(() -> e.reset(ue));
 			}
 
 		} else if (type == EventType.NEW_EVENT) {
 
 			for (Listener e : listeners) {
-				SwingUtilities.invokeLater(() -> e.newEvent(ue));
+			    e.newEvent(ue);
+				//SwingUtilities.invokeLater(() -> e.newEvent(ue));
 			}
 
 		} else if (type == EventType.ADVANCED) {
 
 			for (Listener e : listeners) {
-				SwingUtilities.invokeLater(() -> e.advanced(ue));
+			    e.advanced(ue);
+				//SwingUtilities.invokeLater(() -> e.advanced(ue));
 			}
 		} else if (type == EventType.ERROR) {
 
 			for (Listener e : listeners) {
-				SwingUtilities.invokeLater(() -> e.error(ue, error));
+			    e.error(ue, error);
+				//SwingUtilities.invokeLater(() -> e.error(ue, error));
 			}
 		}
 	}
