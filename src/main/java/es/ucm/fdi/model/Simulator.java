@@ -287,27 +287,23 @@ public class Simulator {
 
 			for (Listener e : listeners) {
 			    e.reset(ue);
-				//SwingUtilities.invokeLater(() -> e.reset(ue));
 			}
 
 		} else if (type == EventType.NEW_EVENT) {
 
 			for (Listener e : listeners) {
 			    e.newEvent(ue);
-				//SwingUtilities.invokeLater(() -> e.newEvent(ue));
 			}
 
 		} else if (type == EventType.ADVANCED) {
 
 			for (Listener e : listeners) {
 			    e.advanced(ue);
-				//SwingUtilities.invokeLater(() -> e.advanced(ue));
 			}
 		} else if (type == EventType.ERROR) {
 
 			for (Listener e : listeners) {
 			    e.error(ue, error);
-				//SwingUtilities.invokeLater(() -> e.error(ue, error));
 			}
 		}
 	}

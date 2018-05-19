@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import es.ucm.fdi.control.Controller;
@@ -422,58 +423,70 @@ public class SimWindow extends JFrame implements Listener {
 	 * Resets the values of the components to the first iteration of the simulator
 	 */
 	public void reset(UpdateEvent ue) {
-		events = ue.getEventQueue();
-		eventsView.setElements(events);
-		eventsView.updated();
-		vehiclesTable.setElements(ctrl.getSim().getRoadMap().getVehiclesRO());
-		vehiclesTable.updated();
-		roadsTable.setElements(ctrl.getSim().getRoadMap().getRoadsRO());
-		roadsTable.updated();
-		junctionsTable.setElements(ctrl.getSim().getRoadMap().getJunctionsRO());
-		junctionsTable.updated();
-		time.setText("" + ctrl.getSim().getSimulatorTime());
+	    SwingUtilities.invokeLater(() -> {
+	        events = ue.getEventQueue();
+	        eventsView.setElements(events);
+	        eventsView.updated();
+	        vehiclesTable.setElements(ctrl.getSim().getRoadMap().getVehiclesRO());
+	        vehiclesTable.updated();
+	        roadsTable.setElements(ctrl.getSim().getRoadMap().getRoadsRO());
+	        roadsTable.updated();
+	        junctionsTable.setElements(ctrl.getSim().getRoadMap().getJunctionsRO());
+	        junctionsTable.updated();
+	        time.setText("" + ctrl.getSim().getSimulatorTime());
+	        
+	        graph.setRm(ctrl.getSim().getRoadMap());
+	        graph.generateGraph();
+	    });
 		
-		graph.setRm(ctrl.getSim().getRoadMap());
-		graph.generateGraph();
 	}
 
 	/**
 	 * Generates a new event from a given UpdateEvent
 	 */
 	public void newEvent(UpdateEvent ue) {
-		events = ue.getEventQueue();
-		eventsView.setElements(events);
-		eventsView.updated();
-		
-		graph.setRm(ctrl.getSim().getRoadMap());
-		graph.generateGraph();
+	    SwingUtilities.invokeLater(() -> {
+
+	        events = ue.getEventQueue();
+	        eventsView.setElements(events);
+	        eventsView.updated();
+	        
+	        graph.setRm(ctrl.getSim().getRoadMap());
+	        graph.generateGraph();
+        });
 	}
 
 	/**
 	 * Updates the components when simulator advances
 	 */
 	public void advanced(UpdateEvent ue) {
-		vehiclesTable.updated();
-		roadsTable.updated();
-		junctionsTable.updated();
-		time.setText("" + ctrl.getSim().getSimulatorTime());
-		
-		graph.setRm(ctrl.getSim().getRoadMap());
-		graph.generateGraph();
+	    SwingUtilities.invokeLater(() -> {
+
+	        vehiclesTable.updated();
+	        roadsTable.updated();
+	        junctionsTable.updated();
+	        time.setText("" + ctrl.getSim().getSimulatorTime());
+	        
+	        graph.setRm(ctrl.getSim().getRoadMap());
+	        graph.generateGraph();
+        });
 	}
 
 	/**
 	 * Given an error shows the error message and then resets the simulator
 	 */
 	public void error(UpdateEvent ue, String error) {
-		showError.showMessageDialog(this, error, 
-		        "Simulation Error" , 
-		        JOptionPane.ERROR_MESSAGE);
-		
-		ctrl.getSim().reset();
-		
-		graph.setRm(ctrl.getSim().getRoadMap());
-		graph.generateGraph();
+	    SwingUtilities.invokeLater(() -> {
+
+	        showError.showMessageDialog(this, error, 
+	                "Simulation Error" , 
+	                JOptionPane.ERROR_MESSAGE);
+	        
+	        ctrl.getSim().reset();
+	        
+	        graph.setRm(ctrl.getSim().getRoadMap());
+	        graph.generateGraph();
+        });
 	}
 
 	/**

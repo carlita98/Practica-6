@@ -3,6 +3,8 @@ package es.ucm.fdi.view;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 /**
  * Class that receives three classes and creates a new thread to execute them 
  * @author Beatriz Herguedas, Carla Martínez 
