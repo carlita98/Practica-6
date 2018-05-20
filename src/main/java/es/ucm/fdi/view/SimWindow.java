@@ -366,9 +366,9 @@ public class SimWindow extends JFrame implements Listener {
 
 		if (currentFile != null) {
 			eventsEditor.get_editor().setText(readFile(currentFile));
-			initializeBorder(eventsEditor, "Events: " + currentFile.getName());
+			initializeBorder(eventsEditor.get_editor(), "Events: " + currentFile.getName());
 		} else {
-		    initializeBorder(eventsEditor, "Events: ");
+		    initializeBorder(eventsEditor.get_editor(), "Events: ");
 		}
 	}
 
@@ -505,7 +505,7 @@ public class SimWindow extends JFrame implements Listener {
 				try {
 		            ctrl.setInputFile(new FileInputStream(currentFile));
                     eventsEditor.get_editor().setText(readFile(currentFile));
-                    initializeBorder(eventsEditor,"Events: " + currentFile.getName());
+                    initializeBorder(eventsEditor.get_editor(),"Events: " + currentFile.getName());
                 }catch (Exception e) {
                     if (e.getCause() != null) {
                         ctrl.getSim().getError(

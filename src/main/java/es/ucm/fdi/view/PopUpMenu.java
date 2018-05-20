@@ -19,7 +19,7 @@ import javax.swing.JTextArea;
  * @author Carla Martínez, Beatriz Herguedas
  *
  */
-public class PopUpMenu extends JComponent{
+public class PopUpMenu {
 
 	private JPanel _mainPanel = new JPanel();
 	private JTextArea _editor;

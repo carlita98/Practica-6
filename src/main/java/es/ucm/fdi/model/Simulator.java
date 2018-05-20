@@ -98,7 +98,6 @@ public class Simulator {
 			sb.append(".It happened at time: ");
 			sb.append(timeLimit);
 			sb.append(". \n");
-			//fireUpdateEvent(EventType.ERROR, sb.toString());
 			while (c != null) {
 				c = (Exception) c.getCause();
 				if (c != null) {
@@ -107,7 +106,7 @@ public class Simulator {
 					sb.append(".\n");
 				}
 			}
-            fireUpdateEvent(EventType.ERROR, sb.toString());
+			getError(sb.toString());
 		}
 	}
 
@@ -176,8 +175,8 @@ public class Simulator {
 			}
 			ini.store(output);
 
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			getError (e.getMessage());
 		}
 	}
 
@@ -253,7 +252,6 @@ public class Simulator {
 		listeners.add(l);
 		UpdateEvent ue = new UpdateEvent(EventType.REGISTERED);
 		l.registered(ue);
-		//SwingUtilities.invokeLater(() -> l.registered(ue));
 	}
 
 	/**

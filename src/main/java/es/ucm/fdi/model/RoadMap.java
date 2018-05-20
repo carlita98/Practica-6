@@ -48,7 +48,8 @@ public class RoadMap {
 		if (simObjects.containsKey(id) && simObjects.get(id) instanceof Junction) {
 			return (Junction) simObjects.get(id);
 		} else {
-			throw new NoSuchElementException("A junction with that ID does not exist");
+			throw new NoSuchElementException(
+			        "A junction with ID: " + id + " does not exist");
 		}
 	}
 
@@ -63,7 +64,8 @@ public class RoadMap {
 		if (simObjects.containsKey(id) && simObjects.get(id) instanceof Road) {
 			return (Road) simObjects.get(id);
 		} else {
-			throw new NoSuchElementException("A road with that ID does not exist");
+			throw new NoSuchElementException(
+			        "A road with ID: " + id +" does not exist");
 		}
 	}
 
@@ -78,7 +80,8 @@ public class RoadMap {
 		if (simObjects.containsKey(id) && simObjects.get(id) instanceof Vehicle) {
 			return (Vehicle) simObjects.get(id);
 		} else {
-			throw new NoSuchElementException("A vehicle with that ID does not exist");
+			throw new NoSuchElementException(
+			        "A vehicle with ID: " + id + " does not exist");
 		}
 	}
 
@@ -126,7 +129,8 @@ public class RoadMap {
 	public void addJunction(Junction j) throws IllegalArgumentException{
 
 		if (simObjects.containsKey(j.getId())) {
-			throw new IllegalArgumentException("This ID already exists");
+			throw new IllegalArgumentException(
+			        "This ID: " + j.getId() + " already exists");
 		} else {
 			junctions.add(j);
 			simObjects.put(j.getId(), j);
@@ -141,7 +145,8 @@ public class RoadMap {
 	public void addRoad(Road r) throws IllegalArgumentException{
 
 		if (simObjects.containsKey(r.getId())) {
-			throw new IllegalArgumentException("This ID already exist");
+			throw new IllegalArgumentException(
+			        "This ID: " + r.getId() + " already exist");
 		} else {
 			roads.add(r);
 			simObjects.put(r.getId(), r);
@@ -156,7 +161,8 @@ public class RoadMap {
 	public void addVehicle(Vehicle v) throws IllegalArgumentException{
 
 		if (simObjects.containsKey(v.getId())) {
-			throw new IllegalArgumentException("This ID already exist");
+			throw new IllegalArgumentException(
+			        "This ID: " + v.getId() + " already exist");
 		} else {
 			vehicles.add(v);
 			simObjects.put(v.getId(), v);
